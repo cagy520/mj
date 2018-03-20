@@ -1,11 +1,10 @@
 <template>
   <div class="start">
-    <!-- <img src="https://placehold.it/150x150" alt="" class="logo">       -->
     <img src="../assets/icon.jpeg" alt="" class="logo">      
     <h3 class="title">你还没有钱包</h3>
     <p class="desc">新建一个钱包或者将你之前的钱包导入吧</p>
     <button class="button first" @click="createWallet">新建钱包</button>
-    <button class="button">导入钱包</button>
+    <button class="button" @click="importWallet">导入钱包</button>
     <x-dialog v-model="showNew">
       <x-input placeholder="请输入密码" :type="passwordInputType" v-model="password" class="input">
         <span slot=right @click="switchPwd">
@@ -14,6 +13,16 @@
         </span>
       </x-input>
       <button class="dialog_button" @click="comfirmCreate">确认</button>        
+    </x-dialog>
+    <x-dialog v-model="showImport">
+      <x-input placeholder="请输入钱包地址" v-model="address" class="input"></x-input>
+      <x-input placeholder="请输入密码" :type="passwordInputType" v-model="password" class="input">
+        <span slot=right @click="switchPwd">
+          <i class="iconfont icon-yanjing" v-if="passwordInputType == 'password'"></i>
+          <i class="iconfont icon-yanjing-tianchong" v-if="passwordInputType != 'password'"></i>
+        </span>
+      </x-input>
+      <button class="dialog_button" @click="comfirmImport">确认</button>        
     </x-dialog>
   </div>
 </template>
@@ -31,7 +40,9 @@
       return{
         showNew: false,
         password: '',
-        passwordInputType: 'password'
+        passwordInputType: 'password',
+        address: '',
+        showImport: false,
       }
     },
     methods: {
@@ -40,16 +51,31 @@
       },
       createWallet(){
         this.showNew = true
-        // this.$router.push({
-        //   path: '/create_wallet',
-        // })
+      },
+      importWallet(){
+        this.showImport = true
       },
       comfirmCreate(){
         if(this.password != ''){
           this.$http.get('api/DemoService/createwallet/' + this.password).then(data => {
-            console.log(data)
-            if(data.body){
-              // JSON.parse(data.body)
+            this.address = data.body[0]
+            localStorage.setItem('address', this.address);
+            localStorage.setItem('password', this.password);
+            this.$router.push({
+              path: '/',
+            })
+          })
+        }
+      },
+      comfirmImport(){
+        if(this.password != '' && this.address != ''){
+          this.$http.get('api/DemoService/GetWallet/' + this.address + '&' + this.password).then(data => {
+            if(data.body._address){
+              localStorage.setItem('address', data.body._address);
+              localStorage.setItem('password', this.password);
+              this.$router.push({
+                path: '/',
+              })
             }
           })
         }

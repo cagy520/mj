@@ -7,7 +7,6 @@
     </div>
     <div class="button_box">
       <button class="button first" @click="copyAddress">复制地址</button>
-      <button class="button" @click="changeWallet">切换地址</button>
     </div>
     <x-dialog :show = "show">
       <div class="address_list">
@@ -31,18 +30,13 @@
     },
     data(){
       return {
-        address: '0x一条幺鸡三条七条二条五条八万六条九条八条幺万五筒三万七筒',
+        address: '',
         options: {
           size: 300,
           background: '#edf6f8',
           foreground: '#3c87b9'
         },
         show: false,
-        addressList: [
-          '0x二条幺鸡三条七条二条五条八万六条九条八条幺万五筒三万七筒',
-          '0x二条幺鸡三条七条二条五条八万六条九条八条幺万五筒四万七筒',
-          '0x二条幺鸡三条七条二条五条八万六条九条八条幺万五筒五万七筒'
-        ]
       }
     },
     computed: {
@@ -68,6 +62,9 @@
         this.address = v[0];
         this.show = false
       }
+    },
+    mounted(){
+      this.address = localStorage.getItem('address')
     }
   }
 </script>

@@ -6,7 +6,7 @@
       <x-input title="数量" v-model="amount" placeholder="请填写数量"></x-input>
     </group>
     <div class="button_box">
-      <button class="button">发送</button>
+      <button class="button" @click="send">发送</button>
     </div>
   </div>
 </template>
@@ -25,9 +25,35 @@
       return {
         receiveAddress: '',
         amount: '',
+        address: '',
+        password: ''
+      }
+    },
+    methods:{
+      send(){
+        console.log('api/DemoService//sendcoin/' + this.address + '&' + this.password + '&' + this.amount + '&' + this.receiveAddress)
+        if(this.receiveAddress && this.amount ){
+          this.$http.get('api/DemoService//sendcoin/' + this.address + '&' + this.password + '&' + this.amount + '&' + this.receiveAddress).then(data => {
+            if(data.body == 'ok'){
+              this.$vux.toast.show({
+                type: 'success',
+                text: '交易成功',
+                width: '200px'
+              })
+            }else{
+              this.$vux.toast.show({
+                type: 'cancel',
+                text: data.body,
+                width: '200px'
+              })
+            }
+          })
+        }
       }
     },
     mounted(){
+      this.address = localStorage.getItem('address')
+      this.password = localStorage.getItem('password')
     }
   }
 </script>

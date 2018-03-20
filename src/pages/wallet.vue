@@ -1,40 +1,27 @@
 <template>
   <div class="wallet">
-    <div class="header">
+    <div class="header" v-if="accout && accout._balance">
       <h2>我的钱包</h2>
       <div class="available_balance">
         <card :header="{title: '可用余额'}">
           <div class="card_flex card_content" slot="content">
             <div class="vux-1px-r">
-              <span class="red">1130</span>
+              <span class="red">{{accout._balance}}</span>
               <br/>
-              <span class="gray">麻将币</span>
-            </div>
-            <div class="vux-1px-r">
-              <span class="red">1130</span>
-              <br/>
-              <span class="gray">ETH</span>
-            </div>
-            <div class="vux-1px-r">
-              <span class="red">1130</span>
-              <br/>
-              <span class="gray">US $</span>
+              <span class="gray">mjc</span>
             </div>
           </div>
         </card>
       </div>
       <div class="address">
         <div><span>当前麻将币地址:</span></div>
-        <div class="scale6"><span>0x二条幺鸡三条七条二条五条八万六条九条八条幺万五筒三万七筒</span></div>
+        <div class="scale6"><span v-text="address"></span></div>
       </div>
       <div class="scan absolute" @click="scan">
         <i class="iconfont icon-saoma"></i>
       </div>
       <div class="qr_code absolute" @click="receive">
         <i class="iconfont icon-msnui-qr-code"></i>
-      </div>
-      <div class="address_manage absolute" @click="addressesManage">
-        <i class="iconfont icon-qianbao"></i>
       </div>
     </div>
     <div class="content">
@@ -45,11 +32,11 @@
           </div>
           <cell v-for="(item, key) in transactionData" :key="key + 'transactiondata'">
             <div slot="title" class="cell_title">
-              <div><span class="cell_title_left">时间:</span><span class="cell_title_right">2016.12.26 12:00:00</span></div>
-              <div class="scale6"><span class="cell_title_left">HASH:</span><span class="cell_title_right">CACF50CAC8BA89337DE1F5A0CE0F8718F0153761</span></div>
-              <div class="scale6"><span class="cell_title_left">from:</span><span class="cell_title_right">0x二条幺鸡三条七条二条五条八万六条九条八条幺万五筒三万七筒</span></div>
-              <div class="scale6"><span class="cell_title_left">to:</span><span class="cell_title_right">0x二条幺鸡三条七条二条五条八万六条九条八条幺万五筒三万七筒</span></div>
-              <div><span class="cell_title_left">金额:</span><span class="cell_title_right">100麻将币</span></div>
+              <div><span class="cell_title_left">时间:</span><span class="cell_title_right">{{item.Time|ftm}}</span></div>
+              <div class="scale6"><span class="cell_title_left">HASH:</span><span class="cell_title_right" v-text="item.Hash">CACF50CAC8BA89337DE1F5A0CE0F8718F0153761</span></div>
+              <div class="scale6"><span class="cell_title_left">from:</span><span class="cell_title_right" v-text="item.Tx"></span></div>
+              <div class="scale6"><span class="cell_title_left">to:</span><span class="cell_title_right" v-text="item.Rx"></span></div>
+              <div><span class="cell_title_left">金额:</span><span class="cell_title_right"><em v-text="item.Sum"></em> mjc</span></div>
             </div>
           </cell>
         </div>
@@ -60,12 +47,15 @@
 
 <script>
   import {Card, Cell, Group} from 'vux'
+  import moment from 'moment'
   export default {
     name: '',
     data(){
       return {
-        transactionData: [{},{}
-        ]
+        transactionData: [],
+        address: '',
+        password: '',
+        accout: null
       }
     },
     components: {
@@ -88,9 +78,38 @@
         this.$router.push({
           path: '/scan'
         })
+      },
+      getAccount(){
+        this.$http.get('api/DemoService/GetWallet/' + this.address + '&' + this.password).then(data => {
+          this.accout = data.body
+          this.getTransactionData()
+        })
+      },
+      getTransactionData(){
+        this.$http.get('api/DemoService//gettrans/' + this.address).then(data => {
+          console.log(data)
+          this.transactionData = data.body
+        })
       }
     },
     computed: {
+    },
+    filters: {
+      ftm(v){
+      console.log(v)
+        
+        return moment(v).format('YYYY.MM.DD HH:mm:ss')
+      }
+    },
+    mounted(){
+      this.address = localStorage.getItem('address')
+      this.password = localStorage.getItem('password')
+      if(!this.address || !this.password){
+        this.$router.push({
+          path: '/start'
+        })
+      }
+      this.getAccount()
     }
   }
 </script>
