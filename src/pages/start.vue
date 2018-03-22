@@ -57,7 +57,7 @@
       },
       comfirmCreate(){
         if(this.password != ''){
-          this.$http.get('api/DemoService/createwallet/' + this.password).then(data => {
+          this.$http.get('http://47.94.133.76:3000/DemoService/createwallet/' + this.password).then(data => {
             this.address = data.body[0]
             localStorage.setItem('address', this.address);
             localStorage.setItem('password', this.password);
@@ -69,7 +69,7 @@
       },
       comfirmImport(){
         if(this.password != '' && this.address != ''){
-          this.$http.get('api/DemoService/GetWallet/' + this.address + '&' + this.password).then(data => {
+          this.$http.get('http://47.94.133.76:3000/DemoService/GetWallet/' + this.address + '/' + this.password).then(data => {
             if(data.body._address){
               localStorage.setItem('address', data.body._address);
               localStorage.setItem('password', this.password);

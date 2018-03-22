@@ -1,6 +1,6 @@
 <template>
   <div class="wallet">
-    <div class="header" v-if="accout && accout._balance">
+    <div class="header" v-if="accout && accout._address">
       <h2>我的钱包</h2>
       <div class="available_balance">
         <card :header="{title: '可用余额'}">
@@ -80,13 +80,14 @@
         })
       },
       getAccount(){
-        this.$http.get('api/DemoService/GetWallet/' + this.address + '&' + this.password).then(data => {
+        this.$http.get('http://47.94.133.76:3000/DemoService/GetWallet/' + this.address + '/' + this.password).then(data => {
           this.accout = data.body
+          console.log(this.accout)
           this.getTransactionData()
         })
       },
       getTransactionData(){
-        this.$http.get('api/DemoService//gettrans/' + this.address).then(data => {
+        this.$http.get('http://47.94.133.76:3000/DemoService/gettrans/' + this.address).then(data => {
           console.log(data)
           this.transactionData = data.body
         })
