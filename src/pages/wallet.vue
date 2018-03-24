@@ -23,6 +23,9 @@
       <div class="qr_code absolute" @click="receive">
         <i class="iconfont icon-msnui-qr-code"></i>
       </div>
+      <div class="icon-tuichu-copy absolute" @click="logoOut">
+        <i class="iconfont icon-tuichu"></i>
+      </div>
     </div>
     <div class="content">
       <group title="交易记录">
@@ -42,9 +45,9 @@
         </div>
       </group>
     </div>
-    <div class="logout">
+    <!-- <div class="logout">
       <button class="button" @click="logoOut">退出账户</button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -114,13 +117,14 @@
     mounted(){
       this.address = localStorage.getItem('address')
       this.password = localStorage.getItem('password')
-      if(!this.address || !this.password){
-        this.$router.push({
-          path: '/start'
-        })
-      }
-      this.getAccount()
-                // this.accout = {"_address":"0x九万九筒幺筒二筒八万幺筒六万八万九条五万二万四万幺万二万","_allowMining":0,"_balance":0,"_block":"0","_password":"111"}
+      // if(!this.address || !this.password){
+      //   this.$router.push({
+      //     path: '/start'
+      //   })
+      // }
+      // this.getAccount()
+      this.accout = {"_address":"0x九万九筒幺筒二筒八万幺筒六万八万九条五万二万四万幺万二万","_allowMining":0,"_balance":0,"_block":"0","_password":"111"}
+      this.address = '0x九万九筒幺筒二筒八万幺筒六万八万九条五万二万四万幺万二万'
     }
   }
 </script>
@@ -128,7 +132,7 @@
 <style scoped lang="less">
   @import '~vux/src/styles/1px.less';
   .iconfont {
-    font-size: 20px;
+    font-size: 28px;
   }
   .header{
     background: -webkit-gradient(linear, 0 0, 0 bottom, from(#3e3ac0), to(#3c78c5));
@@ -139,8 +143,8 @@
   h2{
     text-align: center;
     padding: 10px;
-    font-size: 16px;
-    line-height: 30px;
+    font-size: 20px;
+    line-height: 40px;
   }
   .available_balance{
     width: 90%;
@@ -179,7 +183,7 @@
   .qr_code{
     left: 80px;
   }
-  .address_manage{
+  .icon-tuichu-copy{
     right: 30px;
   }
   .cell_title{
@@ -198,9 +202,28 @@
     color: #376ad3;
   }
   .group{
-    height: 260px;
+    height: 360px;
     overflow: scroll;
   }
+  @media screen and (max-width: 321px){
+    .group{
+      height: 350px;
+      overflow: scroll;
+    }
+  }
+  @media screen and (max-width: 376px)and(min-width: 321px){
+    .group{
+      height: 450px;
+      overflow: scroll;
+    }
+  }
+  @media screen and (max-width: 415px)and(min-width: 376px){
+    .group{
+      height: 520px;
+      overflow: scroll;
+    }
+  }
+
   .nodata{
     text-align: center;
     margin-top: 40px;

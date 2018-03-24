@@ -3,10 +3,10 @@
     <back title="收款页面"></back>
     <div class="qr_code_box">
       <vue-qrcode :value="encodeAddress" :options="options"></vue-qrcode>
-      <p><span v-text="address"></span></p>
+      <p><span v-text="address" id="foo"></span></p>
     </div>
     <div class="button_box">
-      <button class="button first" @click="copyAddress">复制地址</button>
+      <button class="button first" @click="copyAddress" data-clipboard-target="#foo" id="copy-btn">复制地址</button>
     </div>
     <x-dialog :show = "show">
       <div class="address_list">
@@ -65,6 +65,7 @@
     },
     mounted(){
       this.address = localStorage.getItem('address')
+      new Clipboard('#copy-btn')
     }
   }
 </script>
