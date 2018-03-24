@@ -6,9 +6,9 @@
         <card :header="{title: '可用余额'}">
           <div class="card_flex card_content" slot="content">
             <div class="vux-1px-r">
-              <span class="red">{{accout._balance}}</span>
-              <br/>
-              <span class="gray">mjc</span>
+              <span class="red">{{accout._balance | twofixed}}</span>
+              <!-- <br/> -->
+              <span class="gray">麻将币</span>
             </div>
           </div>
         </card>
@@ -41,6 +41,9 @@
           </cell>
         </div>
       </group>
+    </div>
+    <div class="logout">
+      <button class="button" @click="logoOut">退出账户</button>
     </div>
   </div>
 </template>
@@ -82,24 +85,30 @@
       getAccount(){
         this.$http.get('http://47.94.133.76:3000/DemoService/GetWallet/' + this.address + '/' + this.password).then(data => {
           this.accout = data.body
-          console.log(this.accout)
           this.getTransactionData()
         })
       },
       getTransactionData(){
         this.$http.get('http://47.94.133.76:3000/DemoService/gettrans/' + this.address).then(data => {
-          console.log(data)
           this.transactionData = data.body
+        })
+      },
+      logoOut(){
+        localStorage.removeItem('address');
+        localStorage.removeItem('password');
+        this.$router.push({
+          path: '/start'
         })
       }
     },
     computed: {
     },
     filters: {
-      ftm(v){
-      console.log(v)
-        
+      ftm(v){        
         return moment(v).format('YYYY.MM.DD HH:mm:ss')
+      },
+      twofixed(v){
+        return v.toFixed(2)
       }
     },
     mounted(){
@@ -111,6 +120,7 @@
         })
       }
       this.getAccount()
+                // this.accout = {"_address":"0x九万九筒幺筒二筒八万幺筒六万八万九条五万二万四万幺万二万","_allowMining":0,"_balance":0,"_block":"0","_password":"111"}
     }
   }
 </script>
@@ -138,9 +148,11 @@
   }
   .gray{
     color: #333;
+    font-size: 16px;
   }
   .red{
     color: #f74c31;
+    font-size: 16px;
   }
   .card_flex{
     display: flex;
@@ -193,5 +205,19 @@
     text-align: center;
     margin-top: 40px;
     color: #777;
+  }
+  .logout{
+    text-align: center;
+  }
+  .button{
+    width: 220px;
+    height: 50px;
+    border: 1px solid rgba(200, 200, 200, 0.7);
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 20px;
+    background: #36b9c8;
+    color: #fff;
   }
 </style>

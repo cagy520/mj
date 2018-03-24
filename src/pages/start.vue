@@ -3,8 +3,8 @@
     <img src="../assets/icon.jpeg" alt="" class="logo">      
     <h3 class="title">你还没有钱包</h3>
     <p class="desc">新建一个钱包或者将你之前的钱包导入吧</p>
-    <button class="button first" @click="createWallet">新建钱包</button>
-    <button class="button" @click="importWallet">导入钱包</button>
+    <div><button class="button first" @click="createWallet">新建钱包</button></div>
+    <div><button class="button" @click="importWallet">导入钱包</button></div>
     <x-dialog v-model="showNew">
       <x-input placeholder="请输入密码" :type="passwordInputType" v-model="password" class="input">
         <span slot=right @click="switchPwd">
