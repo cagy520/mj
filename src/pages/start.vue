@@ -87,6 +87,7 @@
 <style scoped>
   .start{
     height: 100vh;
+    background: #788fb0; /* 一些不支持背景渐变的浏览器 */
     background: -webkit-linear-gradient(top, #3933b1, #9ed3ecc7);
     font-size: 12px;
     color: #fff;
