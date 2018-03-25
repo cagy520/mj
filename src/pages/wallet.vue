@@ -23,9 +23,9 @@
       <div class="qr_code absolute" @click="receive">
         <i class="iconfont icon-msnui-qr-code"></i>
       </div>
-      <div class="icon-tuichu-copy absolute" @click="logoOut">
+      <!-- <div class="icon-tuichu-copy absolute" @click="logoOut">
         <i class="iconfont icon-tuichu"></i>
-      </div>
+      </div> -->
     </div>
     <div class="content">
       <group title="交易记录">
@@ -35,19 +35,16 @@
           </div>
           <cell v-for="(item, key) in transactionData" :key="key + 'transactiondata'">
             <div slot="title" class="cell_title">
-              <div><span class="cell_title_left">时间:</span><span class="cell_title_right">{{item.Time|ftm}}</span></div>
-              <div class="scale6"><span class="cell_title_left">HASH:</span><span class="cell_title_right" v-text="item.Hash">CACF50CAC8BA89337DE1F5A0CE0F8718F0153761</span></div>
+              <div><span class="cell_title_left">stamp:</span><span class="cell_title_right">{{item.Time|ftm}}</span></div>
+              <div class="scale6"><span class="cell_title_left">hash:</span><span class="cell_title_right" v-text="item.Hash">CACF50CAC8BA89337DE1F5A0CE0F8718F0153761</span></div>
               <div class="scale6"><span class="cell_title_left">from:</span><span class="cell_title_right" v-text="item.Tx"></span></div>
               <div class="scale6"><span class="cell_title_left">to:</span><span class="cell_title_right" v-text="item.Rx"></span></div>
-              <div><span class="cell_title_left">金额:</span><span class="cell_title_right"><em v-text="item.Sum"></em> mjc</span></div>
+              <div><span class="cell_title_left">mjc:</span><span class="cell_title_right"><em v-text="item.Sum"></em></span></div>
             </div>
           </cell>
         </div>
       </group>
     </div>
-    <!-- <div class="logout">
-      <button class="button" @click="logoOut">退出账户</button>
-    </div> -->
   </div>
 </template>
 
@@ -117,14 +114,14 @@
     mounted(){
       this.address = localStorage.getItem('address')
       this.password = localStorage.getItem('password')
-      // if(!this.address || !this.password){
-      //   this.$router.push({
-      //     path: '/start'
-      //   })
-      // }
-      // this.getAccount()
-      this.accout = {"_address":"0x九万九筒幺筒二筒八万幺筒六万八万九条五万二万四万幺万二万","_allowMining":0,"_balance":0,"_block":"0","_password":"111"}
-      this.address = '0x九万九筒幺筒二筒八万幺筒六万八万九条五万二万四万幺万二万'
+      if(!this.address || !this.password){
+        this.$router.push({
+          path: '/start'
+        })
+      }
+      this.getAccount()
+      // this.accout = {"_address":"0x九万九筒幺筒二筒八万幺筒六万八万九条五万二万四万幺万二万","_allowMining":0,"_balance":0,"_block":"0","_password":"111"}
+      // this.address = '0x九万九筒幺筒二筒八万幺筒六万八万九条五万二万四万幺万二万'
     }
   }
 </script>

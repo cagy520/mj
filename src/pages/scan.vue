@@ -1,9 +1,14 @@
 <template>
   <div class="scan">
     <back title="付款页面"></back>
-    <group>
-      <x-input title="收款地址" v-model="receiveAddress" placeholder="请填写地址"></x-input>
-      <x-input title="数量" v-model="amount" placeholder="请填写数量"></x-input>
+    <group title="收款地址：">
+      <x-input title="" v-model="receiveAddress" placeholder="请填写地址"></x-input>
+    </group>
+    <group title="金额：">
+      <x-input title="" v-model="amount" placeholder="请填写数量"></x-input>
+    </group>
+    <group title="密码：">
+      <x-input v-model="password" placeholder="请输入密码" type="password"></x-input>
     </group>
     <div class="button_box">
       <button class="button" @click="send">发送</button>
@@ -52,7 +57,11 @@
     },
     mounted(){
       this.address = localStorage.getItem('address')
-      this.password = localStorage.getItem('password')
+      if(!this.address){
+        this.$router.push({
+          path: '/start'
+        })
+      }
     }
   }
 </script>

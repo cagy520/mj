@@ -7,6 +7,7 @@
     </div>
     <div class="button_box">
       <button class="button first" @click="copyAddress" data-clipboard-target="#foo" id="copy-btn">复制地址</button>
+      <button class="button" @click="logout">切换钱包</button>
     </div>
     <x-dialog :show = "show">
       <div class="address_list">
@@ -61,10 +62,29 @@
       addressChange(v, l){
         this.address = v[0];
         this.show = false
+      },
+      logout(){
+        const _this = this 
+        this.$vux.confirm.show({
+          title:'切换钱包',
+          content: '本操作将会清空你本地缓存，请妥善保存你的钱包地址和密码!',
+          onConfirm () {
+            localStorage.removeItem('address');
+            localStorage.removeItem('password');
+            _this.$router.push({
+              path: '/start'
+            })
+          }
+        })
       }
     },
     mounted(){
       this.address = localStorage.getItem('address')
+      if(!this.address){
+        this.$router.push({
+          path: '/start'
+        })
+      }
       new Clipboard('#copy-btn')
     }
   }
