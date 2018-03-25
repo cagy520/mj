@@ -38,7 +38,7 @@
       send(){
         if(this.receiveAddress && this.amount ){
           this.$http.get('http://47.94.133.76:3000/DemoService/sendcoin/' + this.address + '/' + this.password + '/' + this.amount + '/' + this.receiveAddress).then(data => {
-            if(data.body){
+            if(data.body == '"true"'){
               this.$vux.toast.show({
                 type: 'success',
                 text: '交易成功',
